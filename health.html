@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/page.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="subject-headeing">
+        <img src="images/main-img.png" alt="" width="200" height="200">
+        <h1 class="subject-title">Good Choice! Let's Start Heath Quiz!</h1>
+        <div class="timeContainer">
+            <p class="date"><span id="dateShow"></span></p>
+            <p class="time"><span id="timeShow"></span></p>
+        </div>
+    </div>
+    <section class="container-page">
+
+        <form id="quiz-form">
+            <div class="question" id="q1">
+                <label>Question 1: Which food is good for your eyes?</label><br>
+                <input type="radio" name="q1" value="Candy"> Candy<br>
+                <input type="radio" name="q1" value="Carrots"> Carrots<br>
+                <input type="radio" name="q1" value="Chips"> Chips<br>
+                <div class="feedback" id="q1-feedback"></div>
+            </div>
+            
+            <div class="question" id="q2">
+                <label>Question 2: How many hours of sleep should kids get each night?</label><br>
+                <input type="radio" name="q2" value="5-6 hours"> 5-6 hours<br>
+                <input type="radio" name="q2" value="7-8 hours"> 7-8 hours<br>
+                <input type="radio" name="q2" value="9-11 hours"> 9-11 hours<br>
+                <div class="feedback" id="q2-feedback"></div>
+            </div>
+            
+            <div class="question" id="q3">
+                <label>Question 3: What should you do before eating to help prevent getting sick?</label><br>
+                <input type="radio" name="q3" value="Run around"> Run around<br>
+                <input type="radio" name="q3" value="Wash your hands"> Wash your hands<br>
+                <input type="radio" name="q3" value="Watch TV"> Watch TV<br>
+                <div class="feedback" id="q3-feedback"></div>
+            </div>
+            
+            <div class="question" id="q4">
+                <label>Question 4: What is a good way to stay active and healthy?</label><br>
+                <input type="radio" name="q4" value="Playing video games"> Playing video games<br>
+                <input type="radio" name="q4" value="Exercising"> Exercising<br>
+                <input type="radio" name="q4" value="Eating junk food"> Eating junk food<br>
+                <div class="feedback" id="q4-feedback"></div>
+            </div>
+            
+            <div class="question" id="q5">
+                <label>Question 5: Which drink is the healthiest?</label><br>
+                <input type="radio" name="q5" value="Soda"> Soda<br>
+                <input type="radio" name="q5" value="Water"> Water<br>
+                <input type="radio" name="q5" value="Juice"> Juice<br>
+                <div class="feedback" id="q5-feedback"></div>
+            </div>
+            <button id="button1" type="button" onclick="checkAnswers()" class="submit-button">Submit</button>
+        </form>
+        <P id="result" class="result"></P>
+        <div class="hidden-buttons">
+
+            <button id="button2" style="display: none;" onclick="resetQuiz()" class="submit-button">New attempt</button>
+            <a href="subjects.html" id="button3" style="display: none;" class="link_btn">Try other quiz</a>
+        </div>
+
+    </section>
+
+
+
+
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                q1: 'Carrots',
+                q2: '9-11 hours',
+                q3: 'Wash your hands',
+                q4: 'Exercising',
+                q5: 'Water'
+            };
+            let score = 0;
+
+            // Reset previous feedback
+        const questions = document.querySelectorAll('.question');
+        questions.forEach(question => {
+            question.classList.remove('incorrect', 'correct');
+            const feedback = question.querySelector('.feedback');
+            feedback.innerText = '';
+            feedback.classList.remove('incorrect', 'correct');
+        });
+
+        for (let q in answers) {
+            const selected = document.querySelector(`input[name="${q}"]:checked`);
+            const feedback = document.getElementById(`${q}-feedback`);
+            const question = document.getElementById(q);
+
+            if (!selected) {
+                feedback.innerText = 'Please choose the answer.';
+                feedback.classList.add('incorrect');
+                continue;
+            }
+
+            if (selected.value === answers[q]) {
+                score++;
+                feedback.innerText = 'Good, the answer is correct!';
+                feedback.classList.add('correct');
+                question.classList.add('correct');
+            } else {
+                feedback.innerText = `Incorrect, the correct answer is ${answers[q]}.`;
+                feedback.classList.add('incorrect');
+                question.classList.add('incorrect');
+            }
+        }
+
+        if (score >=3) {
+            document.getElementById('result').innerText = 'Your score: ' + score + '/5.' + ' Good job! You have passed.' ;
+        } else {
+            document.getElementById('result').innerText = 'Your score: ' + score + '/5.' + ' You failed this time.';
+        }
+    }
+
+        function resetQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+
+            // Remove previous results and highlighting
+            document.getElementById('result').innerText = '';
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(question => {
+                question.classList.remove('incorrect', 'correct');
+                const feedback = question.querySelector('.feedback');
+                feedback.innerText = '';
+                feedback.classList.remove('incorrect', 'correct');
+            });
+        }
+        $(document).ready(function () {
+            // Обработчик события для первой кнопки
+            $('#button1').click(function () {
+                $(this).hide(); // Скрыть первую кнопку
+                $('#button2').show();
+                $('#button3').show();// Показать вторую кнопку
+            });
+
+
+        });
+        $(document).ready(function () {
+            // Обработчик события для первой кнопки
+            $('#button2').click(function () {
+                $(this).hide(); // Скрыть первую кнопку
+                $('#button1').show();
+                $('#button3').hide();// Показать вторую кнопку
+            });
+
+
+        });
+        function updateTime() {
+            //getting current date and time
+            const newDate = new Date();
+            //getting year, month, day, hours, minutes, and seconds
+            //used padStart to add 0 in front of single digit numbers
+            const year = newDate.getFullYear();
+            const month = String(newDate.getMonth() + 1).padStart(2, '0');
+            const day = String(newDate.getDate()).padStart(2, '0');
+            const hours = String(newDate.getHours()).padStart(2, '0');
+            const minutes = String(newDate.getMinutes()).padStart(2, '0');
+            const seconds = String(newDate.getSeconds()).padStart(2, '0');
+            //displaying date and time
+            document.getElementById("dateShow").innerText = `${day}/${month}/${year}`;
+            document.getElementById("timeShow").innerText = `${hours}:${minutes}:${seconds}`;
+        }
+        //initial call of the function
+        updateTime();
+        //calling the function every second
+        setInterval(updateTime, 1000);
+    </script>
+
+</body>
+
+</html>

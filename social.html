@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/page.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="subject-headeing">
+        <img src="images/main-img.png" alt="" width="200" height="200">
+        <h1 class="subject-title">Good Choice! Let's Start Social Quiz!</h1>
+        <div class="timeContainer">
+            <p class="date"><span id="dateShow"></span></p>
+            <p class="time"><span id="timeShow"></span></p>
+        </div>
+
+    </div>
+    <section class="container-page">
+
+        <form id="quiz-form">
+            <div class="question" id="q1">
+                <label>Question 1: What is the capital of Scotland?</label><br>
+                <input type="radio" name="q1" value="Edinburgh"> Edinburgh<br>
+                <input type="radio" name="q1" value="Glasgow"> Glasgow<br>
+                <input type="radio" name="q1" value="Aberdeen"> Aberdeen<br>
+                <div class="feedback" id="q1-feedback"></div>
+            </div>
+            
+            <div class="question" id="q2">
+                <label>Question 2: What is the name of the famous monster said to live in a Scottish lake?</label><br>
+                <input type="radio" name="q2" value="Bigfoot"> Bigfoot<br>
+                <input type="radio" name="q2" value="Loch Ness Monster"> Loch Ness Monster<br>
+                <input type="radio" name="q2" value="Yeti"> Yeti<br>
+                <div class="feedback" id="q2-feedback"></div>
+            </div>
+            
+            <div class="question" id="q3">
+                <label>Question 3: Which Scottish city is known for its annual arts festival?</label><br>
+                <input type="radio" name="q3" value="Dundee"> Dundee<br>
+                <input type="radio" name="q3" value="Edinburgh"> Edinburgh<br>
+                <input type="radio" name="q3" value="Stirling"> Stirling<br>
+                <div class="feedback" id="q3-feedback"></div>
+            </div>
+            
+            <div class="question" id="q4">
+                <label>Question 4: What is the traditional Scottish garment worn by men?</label><br>
+                <input type="radio" name="q4" value="Kilt"> Kilt<br>
+                <input type="radio" name="q4" value="Sari"> Sari<br>
+                <input type="radio" name="q4" value="Kimono"> Kimono<br>
+                <div class="feedback" id="q4-feedback"></div>
+            </div>
+            
+            <div class="question" id="q5">
+                <label>Question 5: What is the name of the Scottish national flag?</label><br>
+                <input type="radio" name="q5" value="Union Jack"> Union Jack<br>
+                <input type="radio" name="q5" value="Saltire"> Saltire<br>
+                <input type="radio" name="q5" value="Stars and Stripes"> Stars and Stripes<br>
+                <div class="feedback" id="q5-feedback"></div>
+            </div>
+            <button id="button1" type="button" onclick="checkAnswers()" class="submit-button">Submit</button>
+        </form>
+        <P id="result" class="result"></P>
+        <div class="hidden-buttons">
+
+            <button id="button2" style="display: none;" onclick="resetQuiz()" class="submit-button">New attempt</button>
+            <a href="subjects.html" id="button3" style="display: none;" class="link_btn">Try other quiz</a>
+        </div>
+
+    </section>
+
+
+
+
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                q1: 'Edinburgh',
+                q2: 'Loch Ness Monster',
+                q3: 'Edinburgh',
+                q4: 'Kilt',
+                q5: 'Saltire'
+            };
+            let score = 0;
+
+            // Reset previous feedback
+        const questions = document.querySelectorAll('.question');
+        questions.forEach(question => {
+            question.classList.remove('incorrect', 'correct');
+            const feedback = question.querySelector('.feedback');
+            feedback.innerText = '';
+            feedback.classList.remove('incorrect', 'correct');
+        });
+
+        for (let q in answers) {
+            const selected = document.querySelector(`input[name="${q}"]:checked`);
+            const feedback = document.getElementById(`${q}-feedback`);
+            const question = document.getElementById(q);
+
+            if (!selected) {
+                feedback.innerText = 'Please choose the answer.';
+                feedback.classList.add('incorrect');
+                continue;
+            }
+
+            if (selected.value === answers[q]) {
+                score++;
+                feedback.innerText = 'Good, the answer is correct!';
+                feedback.classList.add('correct');
+                question.classList.add('correct');
+            } else {
+                feedback.innerText = `Incorrect, the correct answer is ${answers[q]}.`;
+                feedback.classList.add('incorrect');
+                question.classList.add('incorrect');
+            }
+        }
+
+        if (score >=3) {
+            document.getElementById('result').innerText = 'Your score: ' + score + '/5.' + ' Good job! You have passed.' ;
+        } else {
+            document.getElementById('result').innerText = 'Your score: ' + score + '/5.' + ' You failed this time.';
+        }
+    }
+
+        function resetQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+
+            // Remove previous results and highlighting
+            document.getElementById('result').innerText = '';
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(question => {
+                question.classList.remove('incorrect', 'correct');
+                const feedback = question.querySelector('.feedback');
+                feedback.innerText = '';
+                feedback.classList.remove('incorrect', 'correct');
+            });
+        }
+        $(document).ready(function () {
+            // Обработчик события для первой кнопки
+            $('#button1').click(function () {
+                $(this).hide(); // Скрыть первую кнопку
+                $('#button2').show();
+                $('#button3').show();// Показать вторую кнопку
+            });
+
+
+        });
+        $(document).ready(function () {
+            // Обработчик события для первой кнопки
+            $('#button2').click(function () {
+                $(this).hide(); // Скрыть первую кнопку
+                $('#button1').show();
+                $('#button3').hide();// Показать вторую кнопку
+            });
+
+
+        });
+        function updateTime() {
+            //getting current date and time
+            const newDate = new Date();
+            //getting year, month, day, hours, minutes, and seconds
+            //used padStart to add 0 in front of single digit numbers
+            const year = newDate.getFullYear();
+            const month = String(newDate.getMonth() + 1).padStart(2, '0');
+            const day = String(newDate.getDate()).padStart(2, '0');
+            const hours = String(newDate.getHours()).padStart(2, '0');
+            const minutes = String(newDate.getMinutes()).padStart(2, '0');
+            const seconds = String(newDate.getSeconds()).padStart(2, '0');
+            //displaying date and time
+            document.getElementById("dateShow").innerText = `${day}/${month}/${year}`;
+            document.getElementById("timeShow").innerText = `${hours}:${minutes}:${seconds}`;
+        }
+        //initial call of the function
+        updateTime();
+        //calling the function every second
+        setInterval(updateTime, 1000);
+    </script>
+
+</body>
+
+</html>

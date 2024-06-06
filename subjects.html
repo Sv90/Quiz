@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/subjects.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    
+</head>
+<body onload="displayWelcomeMessage()">
+    <div class="subject-headeing">
+        <h1 id="welcomeMessage" class="subject-title"></h1>
+        <p class="subject-paragraph">Please, choose the subject.</p>
+        <div class="timeContainer">
+            <p class="date"><span id="dateShow"></span></p>
+            <p class="time"><span id="timeShow"></span></p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container-item">
+            <img src="images/subject-img1.png" alt="" class="container-item-img">
+            <a href="math.html" class="container-item-link">Math</a>
+        </div>
+        <div class="container-item">
+            <img src="images/subject-img2.png" alt="" class="container-item-img">
+            <a href="health.html" class="container-item-link">Health</a>
+        </div>
+        <div class="container-item">
+            <img src="images/subject-img3.png" alt="" class="container-item-img">
+            <a href="geo.html" class="container-item-link">Geo</a>
+        </div>
+        <div class="container-item">
+            <img src="images/subject-img4.png" alt="" class="container-item-img">
+            <a href="english.html" class="container-item-link">English</a>
+        </div>
+        <div class="container-item">
+            <img src="images/subject-img5.png" alt="" class="container-item-img">
+            <a href="social.html" class="container-item-link">Social</a>
+        </div>
+        
+    </div>
+
+    <script>
+        // Function to get a cookie
+function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function displayWelcomeMessage() {
+            const username = getCookie("username");
+            if (username !== "") {
+                document.getElementById("welcomeMessage").innerText = "Welcome, " + username;
+            } else {
+                document.getElementById("welcomeMessage").innerText = "Welcome!";
+            }
+        }
+        function updateTime() {
+            //getting current date and time
+            const newDate = new Date();
+            //getting year, month, day, hours, minutes, and seconds
+            //used padStart to add 0 in front of single digit numbers
+            const year = newDate.getFullYear();
+            const month = String(newDate.getMonth() + 1).padStart(2, '0');
+            const day = String(newDate.getDate()).padStart(2, '0');
+            const hours = String(newDate.getHours()).padStart(2, '0');
+            const minutes = String(newDate.getMinutes()).padStart(2, '0');
+            const seconds = String(newDate.getSeconds()).padStart(2, '0');
+            //displaying date and time
+            document.getElementById("dateShow").innerText = `${day}/${month}/${year}`;
+            document.getElementById("timeShow").innerText = `${hours}:${minutes}:${seconds}`;
+        }
+        //initial call of the function
+        updateTime();
+        //calling the function every second
+        setInterval(updateTime, 1000);
+
+    </script>
+</body>
+</html>

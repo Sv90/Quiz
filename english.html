@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/page.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="subject-headeing">
+        <img src="images/main-img.png" alt="" width="200" height="200">
+        <h1 class="subject-title">Good Choice! Let's Start Ehglish Quiz!</h1>
+        <div class="timeContainer">
+            <p class="date"><span id="dateShow"></span></p>
+            <p class="time"><span id="timeShow"></span></p>
+        </div>
+        </div>
+        
+
+    </div>
+    <section class="container-page">
+
+        <form id="quiz-form">
+            <div class="question" id="q1">
+                <label>Question 1: What is the past tense of 'go'?</label><br>
+                <input type="radio" name="q1" value="gone"> Gone<br>
+                <input type="radio" name="q1" value="went"> Went<br>
+                <input type="radio" name="q1" value="goes"> Goes<br>
+                <div class="feedback" id="q1-feedback"></div>
+            </div>
+        
+            <div class="question" id="q2">
+                <label>Question 2: What is the synonym of 'big'?</label><br>
+                <input type="radio" name="q2" value="small"> Small<br>
+                <input type="radio" name="q2" value="large"> Large<br>
+                <input type="radio" name="q2" value="tiny"> Tiny<br>
+                <div class="feedback" id="q2-feedback"></div>
+            </div>
+        
+            <div class="question" id="q3">
+                <label>Question 3: How do you spell 'receive'?</label><br>
+                <input type="radio" name="q3" value="recieve"> Recieve<br>
+                <input type="radio" name="q3" value="receive"> Receive<br>
+                <input type="radio" name="q3" value="receeve"> Reeeceive<br>
+                <div class="feedback" id="q3-feedback"></div>
+            </div>
+        
+            <div class="question" id="q4">
+                <label>Question 4: What is the opposite of 'happy'?</label><br>
+                <input type="radio" name="q4" value="joyful"> Joyful<br>
+                <input type="radio" name="q4" value="sad"> Sad<br>
+                <input type="radio" name="q4" value="glad"> Glad<br>
+                <div class="feedback" id="q4-feedback"></div>
+            </div>
+        
+            <div class="question" id="q5">
+                <label>Question 5: What is the plural of 'mouse'?</label><br>
+                <input type="radio" name="q5" value="mouses"> Mouses<br>
+                <input type="radio" name="q5" value="mice"> Mice<br>
+                <input type="radio" name="q5" value="mousees"> Mousees<br>
+                <div class="feedback" id="q5-feedback"></div>
+            </div>
+            <button id="button1" type="button" onclick="checkAnswers()" class="submit-button">Submit</button>
+        </form>
+        <P id="result" class="result"></P>
+        <div class="hidden-buttons">
+
+            <button id="button2" style="display: none;" onclick="resetQuiz()" class="submit-button">New attempt</button>
+            <a href="subjects.html" id="button3" style="display: none;" class="link_btn">Try other quiz</a>
+        </div>
+
+    </section>
+
+
+
+
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                q1: 'went',
+                q2: 'large',
+                q3: 'receive',
+                q4: 'sad',
+                q5: 'mice'
+            };
+            let score = 0;
+
+            /// Reset previous feedback
+        const questions = document.querySelectorAll('.question');
+        questions.forEach(question => {
+            question.classList.remove('incorrect', 'correct');
+            const feedback = question.querySelector('.feedback');
+            feedback.innerText = '';
+            feedback.classList.remove('incorrect', 'correct');
+        });
+
+        for (let q in answers) {
+            const selected = document.querySelector(`input[name="${q}"]:checked`);
+            const feedback = document.getElementById(`${q}-feedback`);
+            const question = document.getElementById(q);
+
+            if (!selected) {
+                feedback.innerText = 'Please choose the answer.';
+                feedback.classList.add('incorrect');
+                
+                continue;
+            }
+
+            if (selected.value === answers[q]) {
+                score++;
+                feedback.innerText = 'Good, the answer is correct!';
+                feedback.classList.add('correct');
+                question.classList.add('correct');
+            } else {
+                feedback.innerText = `Incorrect, the correct answer is ${answers[q]}.`;
+                feedback.classList.add('incorrect');
+                question.classList.add('incorrect');
+            }
+        }
+
+        if (score >=3) {
+            document.getElementById('result').innerText = 'Your score: ' + score + '/5.' + ' Good job! You have passed.' ;
+        } else {
+            document.getElementById('result').innerText = 'Your score: ' + score + '/5.' + ' You failed this time.';
+        }
+    }
+        function resetQuiz() {
+            // Reset form
+            document.getElementById('quizForm').reset();
+
+            // Remove previous results and highlighting
+            document.getElementById('result').innerText = '';
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(question => {
+                question.classList.remove('incorrect', 'correct');
+                const feedback = question.querySelector('.feedback');
+                feedback.innerText = '';
+                feedback.classList.remove('incorrect', 'correct');
+            });
+        }
+        $(document).ready(function () {
+            // Обработчик события для первой кнопки
+            $('#button1').click(function () {
+                $(this).hide(); // Скрыть первую кнопку
+                $('#button2').show();
+                $('#button3').show();// Показать вторую кнопку
+            });
+
+
+        });
+        $(document).ready(function () {
+            // Обработчик события для первой кнопки
+            $('#button2').click(function () {
+                $(this).hide(); // Скрыть первую кнопку
+                $('#button1').show();
+                $('#button3').hide();// Показать вторую кнопку
+            });
+
+
+        });
+        function updateTime() {
+            //getting current date and time
+            const newDate = new Date();
+            //getting year, month, day, hours, minutes, and seconds
+            //used padStart to add 0 in front of single digit numbers
+            const year = newDate.getFullYear();
+            const month = String(newDate.getMonth() + 1).padStart(2, '0');
+            const day = String(newDate.getDate()).padStart(2, '0');
+            const hours = String(newDate.getHours()).padStart(2, '0');
+            const minutes = String(newDate.getMinutes()).padStart(2, '0');
+            const seconds = String(newDate.getSeconds()).padStart(2, '0');
+            //displaying date and time
+            document.getElementById("dateShow").innerText = `${day}/${month}/${year}`;
+            document.getElementById("timeShow").innerText = `${hours}:${minutes}:${seconds}`;
+        }
+        //initial call of the function
+        updateTime();
+        //calling the function every second
+        setInterval(updateTime, 1000);
+    </script>
+
+</body>
+
+</html>
